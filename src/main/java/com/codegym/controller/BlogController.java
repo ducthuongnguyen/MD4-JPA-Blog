@@ -6,6 +6,9 @@ import com.codegym.service.IBlogService;
 import com.codegym.service.ICategoryService;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +31,13 @@ public class BlogController {
     }
 
     @GetMapping()
-    public String showList(Model model) {
-        Iterable<Blog> blogs = blogService.findAll();
+    public String showList(Model model, @PageableDefault(value = 3) Pageable pageable, @RequestParam Optional<String> search) {
+        Page<Blog> blogs;
+        if (search.isPresent()) {
+            blogs = blogService.findAllByNameContaining(search.get(), pageable);
+        }else {
+            blogs = blogService.findAll(pageable);
+        }
         model.addAttribute("blogs", blogs);
         return "/blog/list";
     }
