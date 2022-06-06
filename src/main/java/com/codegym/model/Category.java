@@ -10,16 +10,13 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @OneToMany(targetEntity = Blog.class)
-    private List<Blog> blogs;
 
     public Category() {
     }
 
-    public Category(Long id, String name, List<Blog> blogs) {
+    public Category(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.blogs = blogs;
     }
 
     public Long getId() {
@@ -38,11 +35,5 @@ public class Category {
         this.name = name;
     }
 
-    public List<Blog> getBlogs() {
-        return blogs;
-    }
 
-    public void setBlogs(List<Blog> blogs) {
-        this.blogs = blogs;
-    }
 }
