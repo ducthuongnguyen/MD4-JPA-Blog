@@ -1,7 +1,6 @@
 package com.codegym.model;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "categories")
@@ -34,6 +33,5 @@ public class Category {
     public void setName(String name) {
         this.name = name;
     }
-
 
 }

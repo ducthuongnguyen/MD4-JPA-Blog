@@ -6,14 +6,18 @@ import com.codegym.service.IBlogService;
 import com.codegym.service.ICategoryService;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 
@@ -31,11 +35,11 @@ public class BlogController {
     }
 
     @GetMapping()
-    public String showList(Model model, @PageableDefault(value = 3) Pageable pageable, @RequestParam Optional<String> search) {
+    public String showList(Model model, @PageableDefault(value = 10) Pageable pageable, @RequestParam Optional<String> search) {
         Page<Blog> blogs;
         if (search.isPresent()) {
             blogs = blogService.findAllByNameContaining(search.get(), pageable);
-        }else {
+        } else {
             blogs = blogService.findAll(pageable);
         }
         model.addAttribute("blogs", blogs);
@@ -51,8 +55,15 @@ public class BlogController {
 
 
     @PostMapping("/save")
-    public ModelAndView save(Blog blog) {
-        ModelAndView modelAndView = new ModelAndView("/blog/create");
+    public ModelAndView save(@Valid Blog blog, BindingResult bindingResult) {
+        new Blog().validate(blog,bindingResult);
+        ModelAndView modelAndView;
+        if (bindingResult.hasErrors()) {
+            modelAndView = new ModelAndView("/blog/create");
+            return modelAndView;
+        }
+        modelAndView = new ModelAndView("/blog/create");
+        blog.setCreatedDate(LocalDateTime.now());
         blogService.save(blog);
         modelAndView.addObject("blog", new Blog());
         modelAndView.addObject("mess", "New blog was created!!!");
@@ -100,6 +111,14 @@ public class BlogController {
     public ModelAndView remove(Blog blog) {
         ModelAndView modelAndView = new ModelAndView("redirect:/blogs");
         blogService.remove(blog.getId());
+        return modelAndView;
+    }
+
+    @GetMapping("/sortByDate")
+    public ModelAndView sortByCreatedDate(@PageableDefault(value = 4) Pageable pageable, Blog blog) {
+        Page<Blog> sortList = blogService.findAllByOrderByCreatedDate(pageable);
+        ModelAndView modelAndView = new ModelAndView("/blog/list");
+        modelAndView.addObject("blogs", sortList);
         return modelAndView;
     }
 }

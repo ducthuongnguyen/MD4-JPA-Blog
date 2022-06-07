@@ -15,7 +15,7 @@
 </th:block>
 <form th:action="@{/blogs/edit}" th:object="${blog}" method="post">
     <input type="hidden" th:field="*{id}">
-    <table border="1">
+    <table>
         <tr>
             <td>Blog name</td>
             <td><input type="text" th:field="*{name}"></td>

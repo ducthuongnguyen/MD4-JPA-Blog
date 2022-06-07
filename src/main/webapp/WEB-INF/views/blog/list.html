@@ -14,20 +14,22 @@
     <input name="search" type="text"/>
     <input type="submit" value="Search"/>
 </form>
+
+<a th:href="@{/blogs/sortByDate}">Sort by created time</a>
 <table border="1">
     <tr>
         <th>Name</th>
         <th>Author</th>
-        <th>Content</th>
         <th>Category</th>
+        <th>Created date</th>
         <th>Edit</th>
         <th>Delete</th>
     </tr>
     <tr th:each="b:${blogs}">
         <td th:text="${b.name}"></td>
         <td th:text="${b.author}"></td>
-        <td th:text="${b.content}"></td>
         <td th:text="${b.category.name}"></td>
+        <td th:text="${b.createdDate}"></td>
         <td><a th:href="@{blogs/__${b.id}__/edit}">Edit</a></td>
         <td><a th:href="@{blogs/delete/__${b.id}__}">Delete</a></td>
     </tr>

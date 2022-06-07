@@ -5,8 +5,12 @@ import com.codegym.model.Category;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public interface IBlogService extends IGeneralBlog<Blog> {
     Page<Blog> findAll(Pageable pageable);
     Page<Blog> findAllByNameContaining(String name, Pageable pageable);
     Page<Blog> findAllByCategory(Category category, Pageable pageable);
+    Page<Blog> findAllByOrderByCreatedDate( Pageable pageable);
 }

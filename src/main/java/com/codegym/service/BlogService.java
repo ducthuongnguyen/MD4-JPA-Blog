@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,5 +58,10 @@ public class BlogService implements IBlogService {
     @Override
     public Page<Blog> findAllByCategory(Category category, Pageable pageable) {
         return blogRepository.findAllByCategory(category,pageable);
+    }
+
+    @Override
+    public Page<Blog> findAllByOrderByCreatedDate(Pageable pageable) {
+        return blogRepository.findAllByOrderByCreatedDate(pageable);
     }
 }

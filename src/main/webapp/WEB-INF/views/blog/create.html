@@ -13,12 +13,13 @@
 <th:block th:if="${mess}">
     <p th:text="${mess}"></p>
 </th:block>
-<form th:action="@{/blogs/edit}" th:object="${blog}" method="post">
+<form th:action="@{/blogs/save}" th:object="${blog}" method="post">
     <input type="hidden" th:field="*{id}">
-    <table border="1">
+    <table>
         <tr>
             <td>Blog name</td>
             <td><input type="text" th:field="*{name}"></td>
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
         </tr>
         <tr>
             <td>Blog author</td>
@@ -26,8 +27,10 @@
         </tr>
         <tr>
             <td>Blog content</td>
-            <td><input type="text" th:field="*{content}"></td>
+            <td><textarea rows="9" cols="70"  th:field="*{content}"> </textarea></td>
+            <span th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></span>
         </tr>
+        <input th:type="hidden" th:value="*{createdDate}">
         <tr>
             <td>Category</td>
             <td>
@@ -38,7 +41,7 @@
         </tr>
         <tr>
             <td></td>
-            <td><input type="submit" value="Update"></td>
+            <td><input type="submit" value="Create"></td>
         </tr>
     </table>
 </form>

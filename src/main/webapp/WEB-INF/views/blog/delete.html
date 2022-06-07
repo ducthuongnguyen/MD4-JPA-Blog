@@ -31,10 +31,7 @@
         <tr>
             <td>Category</td>
             <td>
-                <select name = "category">
-                    <option th:each="c:${categories}" th:value="${c.id}" th:text="${c.name}"
-                            th:selected="${c.id} == ${blog.category.id}"></option>
-                </select>
+                <input type="text" th:field="${blog.category.name}">
             </td>
         </tr>
         <tr>
