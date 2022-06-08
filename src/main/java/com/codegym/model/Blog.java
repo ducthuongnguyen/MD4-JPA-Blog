@@ -6,6 +6,7 @@ import org.springframework.validation.Validator;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "blogs")
@@ -43,7 +44,7 @@ public class Blog implements Validator {
     }
 
     public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = LocalDateTime.now();
+        this.createdDate = createdDate;
     }
 
     public void setCategory(Category category) {
