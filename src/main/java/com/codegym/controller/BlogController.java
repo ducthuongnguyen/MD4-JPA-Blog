@@ -70,6 +70,15 @@ public class BlogController {
         return new ResponseEntity<>(blogs,HttpStatus.OK);
     }
 
+    @GetMapping("/find")
+    public ResponseEntity<Blog> viewBlog(@RequestParam Long id){
+        Optional<Blog> blogOptional = blogService.findById(id);
+        if (!blogOptional.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(blogOptional.get(),HttpStatus.OK);
+    }
+
     @GetMapping("/create")
     public ModelAndView showCreateForm(@CookieValue(value = "counter", defaultValue = "0") Long counter, HttpServletResponse response) {
         counter++;

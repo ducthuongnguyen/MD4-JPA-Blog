@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import sun.security.krb5.internal.PAForUserEnc;
 
 import java.util.List;
 import java.util.Optional;
@@ -115,5 +116,15 @@ public class CategoryController {
 //        return modelAndView;
 //    }
 
-//
+
+    @GetMapping("/view/{id}")
+    public ResponseEntity<Iterable<Blog>> viewCategory(@PathVariable Long id) {
+        Optional<Category> categoryOptional = categoryService.findById(id);
+        if (!categoryOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+       return new ResponseEntity<>(blogService.findAllByCategory(categoryOptional.get()),HttpStatus.OK);
+    }
+
+
 }
