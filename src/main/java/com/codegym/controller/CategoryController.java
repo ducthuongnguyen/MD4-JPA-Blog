@@ -8,15 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/categories")
+@RequestMapping("api/categories")
 public class CategoryController {
     @Autowired
     ICategoryService categoryService;
@@ -24,29 +27,36 @@ public class CategoryController {
     @Autowired
     IBlogService blogService;
 
-    @GetMapping()
-    public String showListProvince(Model model) {
-        Iterable<Category> categories = categoryService.findAll();
-        model.addAttribute("categories", categories);
-        return "/category/list";
+    @GetMapping
+    public ResponseEntity<Iterable<Category>> showListProvince() {
+        List<Category> categories = (List<Category>) categoryService.findAll();
+        if (categories.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
-    @GetMapping("/create")
-    public ModelAndView showCreateForm() {
-        ModelAndView modelAndView = new ModelAndView("/category/create");
-        modelAndView.addObject("category", new Category());
-        return modelAndView;
+    @PostMapping
+    public ResponseEntity<Category> createCategory(@RequestBody Category category) {
+        return new ResponseEntity<>(categoryService.save(category), HttpStatus.CREATED);
     }
 
-
-    @PostMapping("/save")
-    public ModelAndView save(Category category) {
-        ModelAndView modelAndView = new ModelAndView("/category/create");
-        categoryService.save(category);
-        modelAndView.addObject("blog", new Category());
-        modelAndView.addObject("mess", "New category was created!!!");
-        return modelAndView;
-    }
+//    @GetMapping("/create")
+//    public ModelAndView showCreateForm() {
+//        ModelAndView modelAndView = new ModelAndView("/category/create");
+//        modelAndView.addObject("category", new Category());
+//        return modelAndView;
+//    }
+//
+//
+//    @PostMapping("/save")
+//    public ModelAndView save(Category category) {
+//        ModelAndView modelAndView = new ModelAndView("/category/create");
+//        categoryService.save(category);
+//        modelAndView.addObject("blog", new Category());
+//        modelAndView.addObject("mess", "New category was created!!!");
+//        return modelAndView;
+//    }
 
     @GetMapping("/{id}/edit")
     public ModelAndView showEditForm(@PathVariable Long id) {
@@ -62,14 +72,14 @@ public class CategoryController {
 
     }
 
-    @PostMapping("/edit")
-    public ModelAndView updateBlog(Category category) {
-        ModelAndView modelAndView = new ModelAndView("/category/edit");
-        categoryService.save(category);
-        modelAndView.addObject("category", category);
-        modelAndView.addObject("mess", "Update category successfully!!!");
-        return modelAndView;
-    }
+//    @PostMapping("/edit")
+//    public ModelAndView updateBlog(Category category) {
+//        ModelAndView modelAndView = new ModelAndView("/category/edit");
+//        categoryService.save(category);
+//        modelAndView.addObject("category", category);
+//        modelAndView.addObject("mess", "Update category successfully!!!");
+//        return modelAndView;
+//    }
 
     @GetMapping("/delete/{id}")
     public ModelAndView showDeleteForm(@PathVariable Long id) {
@@ -92,16 +102,18 @@ public class CategoryController {
         return modelAndView;
     }
 
-    @GetMapping("/view/{id}")
-    public ModelAndView viewCategory(@PageableDefault(value = 3) Pageable pageable, @PathVariable Long id) {
-        Optional<Category> categoryOptional = categoryService.findById(id);
-        if (!categoryOptional.isPresent()) {
-            return new ModelAndView("/error.404");
-        }
-        Page<Blog> blogs = blogService.findAllByCategory(categoryOptional.get(), pageable);
-        ModelAndView modelAndView = new ModelAndView("/category/view");
-        modelAndView.addObject("blogs", blogs);
-        modelAndView.addObject("category", categoryOptional.get());
-        return modelAndView;
-    }
+//    @GetMapping("/view/{id}")
+//    public ModelAndView viewCategory(@PageableDefault(value = 3) Pageable pageable, @PathVariable Long id) {
+//        Optional<Category> categoryOptional = categoryService.findById(id);
+//        if (!categoryOptional.isPresent()) {
+//            return new ModelAndView("/error.404");
+//        }
+//        Page<Blog> blogs = blogService.findAllByCategory(categoryOptional.get(), pageable);
+//        ModelAndView modelAndView = new ModelAndView("/category/view");
+//        modelAndView.addObject("blogs", blogs);
+//        modelAndView.addObject("category", categoryOptional.get());
+//        return modelAndView;
+//    }
+
+//
 }

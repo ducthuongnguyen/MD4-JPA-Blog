@@ -2,6 +2,8 @@ package com.codegym.configuration;
 
 import com.codegym.formatter.CategoryFormatter;
 import com.codegym.service.CategoryService;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
@@ -37,6 +39,7 @@ import java.util.Properties;
 @EnableJpaRepositories("com.codegym.repository")
 @ComponentScan("com.codegym")
 @EnableSpringDataWebSupport
+@JsonSerialize(using = LocalDateTimeSerializer.class)
 public class AppConfig implements WebMvcConfigurer, ApplicationContextAware {
 
     private ApplicationContext applicationContext;

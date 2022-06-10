@@ -9,7 +9,7 @@
 <p>
     <a href="/blogs">Back to Blog list</a>
 </p>
-
+<p th:text="${cookie.getValue()}"></p>
 <th:block th:if="${mess}">
     <p th:text="${mess}"></p>
 </th:block>

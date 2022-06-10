@@ -1,5 +1,6 @@
 package com.codegym.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -39,6 +40,7 @@ public class Blog implements Validator {
         return category;
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getCreatedDate() {
         return createdDate;
     }

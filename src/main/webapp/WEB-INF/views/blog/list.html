@@ -14,7 +14,8 @@
     <input name="search" type="text"/>
     <input type="submit" value="Search"/>
 </form>
-
+<br>
+<p th:text="${cookie1.getValue()}"></p>
 <a th:href="@{/blogs/sortByDate}">Sort by created time</a>
 <table border="1">
     <tr>
