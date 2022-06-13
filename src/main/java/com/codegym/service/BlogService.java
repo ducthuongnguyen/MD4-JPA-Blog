@@ -64,4 +64,9 @@ public class BlogService implements IBlogService {
     public Page<Blog> findAllByOrderByCreatedDate(Pageable pageable) {
         return blogRepository.findAllByOrderByCreatedDate(pageable);
     }
+
+    @Override
+    public Iterable<Blog> findAllByNameContaining(String name) {
+        return blogRepository.findAllByNameContaining(name);
+    }
 }

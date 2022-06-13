@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog list</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+</head>
+<body>
+<input type="text" id="key">
+<button onclick="search()">Search</button>
+<button onclick="showAllBlogs()">Show blogs</button>
+<div id="content">
+
+</div>
+<script>
+    let show = document.getElementById("content");
+
+    function showAllBlogs() {
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8080/api/blogs",
+            success: function (data) {
+                display(data)
+            }, error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
+    function display(data) {
+        let str = "";
+        console.log(data)
+        for (let i = 0; i < data.length; i++) {
+            str += "<h3>" + data[i].id + "|" + data[i].name + "</h3>"
+        }
+        show.innerHTML = str;
+    }
+
+    function search() {
+        let key = document.getElementById("key").value;
+        console.log(key);
+        $.ajax({
+            type: "GET",
+            url:"http://localhost:8080/api/blogs/search?name="+key,
+            success: function (data) {
+                display(data)
+            }, error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
+
+</script>
+</body>
+</html>

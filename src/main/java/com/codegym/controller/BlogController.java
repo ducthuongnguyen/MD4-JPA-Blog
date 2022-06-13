@@ -30,6 +30,7 @@ import java.util.Optional;
 
 
 @Controller
+@CrossOrigin("*")
 @RequestMapping("api/blogs")
 public class BlogController {
     @Autowired
@@ -44,6 +45,7 @@ public class BlogController {
         return categoryService.findAll();
     }
 
+    //
 //    @GetMapping()
 //    public String showList(@CookieValue(value = "cookie", defaultValue = "0") Long counter, HttpServletResponse response, Model model, @PageableDefault(value = 10) Pageable pageable, @RequestParam Optional<String> search) {
 //        counter++;
@@ -60,23 +62,23 @@ public class BlogController {
 //        model.addAttribute("cookie1", cookie);
 //        return "/blog/list";
 //    }
-
+//
     @GetMapping
-    public ResponseEntity<Iterable<Blog>> showAllList(){
+    public ResponseEntity<Iterable<Blog>> showAllList() {
         List<Blog> blogs = (List<Blog>) blogService.findAll();
-        if (blogs.isEmpty()){
+        if (blogs.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(blogs,HttpStatus.OK);
+        return new ResponseEntity<>(blogs, HttpStatus.OK);
     }
 
     @GetMapping("/find")
-    public ResponseEntity<Blog> viewBlog(@RequestParam Long id){
+    public ResponseEntity<Blog> viewBlog(@RequestParam Long id) {
         Optional<Blog> blogOptional = blogService.findById(id);
-        if (!blogOptional.isPresent()){
+        if (!blogOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(blogOptional.get(),HttpStatus.OK);
+        return new ResponseEntity<>(blogOptional.get(), HttpStatus.OK);
     }
 
     @GetMapping("/create")
@@ -106,7 +108,7 @@ public class BlogController {
         modelAndView.addObject("blog", new Blog());
         modelAndView.addObject("mess", "New blog was created!!!");
         //luu blog vao httpSession
-        httpSession.setAttribute("blog",blog);
+        httpSession.setAttribute("blog", blog);
         return modelAndView;
     }
 
@@ -163,10 +165,16 @@ public class BlogController {
     }
 
     @GetMapping("/viewSession")
-    public ModelAndView viewSession(){
+    public ModelAndView viewSession() {
         ModelAndView modelAndView = new ModelAndView("/blog/info");
         //lay blog tu httpSession ra
         Blog blog = (Blog) httpSession.getAttribute("blog");
         return modelAndView;
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Iterable<Blog>> findByName(@RequestParam String name) {
+        Iterable<Blog> blogs = blogService.findAllByNameContaining(name);
+        return new ResponseEntity<>(blogs,HttpStatus.OK);
     }
 }

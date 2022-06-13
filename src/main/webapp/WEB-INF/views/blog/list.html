@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Blog list</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
 </head>
 <body>
 <a th:href="@{/categories}">Show category list</a>
 <br>
 <a th:href="@{blogs/create}">Create a new blog</a>
 <br>
-<form>
-    Search by name:
-    <input name="search" type="text"/>
-    <input type="submit" value="Search"/>
-</form>
+Search by name:
+<input name="search" type="text" id="search"/>
+<input type="submit" value="Search" onclick="search()"/>
 <br>
-<p th:text="${cookie1.getValue()}"></p>
+<!--<p th:text="${cookie1.getValue()}"></p>-->
 <a th:href="@{/blogs/sortByDate}">Sort by created time</a>
 <table border="1">
     <tr>
@@ -40,5 +40,13 @@
     <span th:text="${blogs.number + 1}"></span>/<span th:text="${blogs.totalPages}"></span>
     <a th:href="@{'/blogs'(page=${blogs.number + 1})}" th:if="${blogs.hasNext()}">Next</a>
 </div>
+<script>
+    function search() {
+        let key = $('#search').val();
+        console.log(key);
+    }
+
+
+</script>
 </body>
 </html>
